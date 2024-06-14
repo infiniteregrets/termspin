@@ -301,7 +301,23 @@ impl Frames for Line {
     }
 
     fn lines(&self) -> usize {
-        self.text.chars().filter(|&c| c == '\n').count() + 1
+        let max_len = termsize::get().map_or(80, |ts| ts.cols as usize);
+        self.text
+            .chars()
+            .fold((1, 0), |(mut lines, mut len), c| {
+                if c == '\n' {
+                    lines += 1;
+                    len = 0;
+                } else {
+                    len += 1;
+                    if len >= max_len {
+                        lines += 1;
+                        len = 0;
+                    }
+                }
+                (lines, len)
+            })
+            .0
     }
 }
 
