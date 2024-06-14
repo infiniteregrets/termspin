@@ -63,14 +63,14 @@ where
     }
 
     /// Lock this shared object and the global shared lock.
-    /// 
+    ///
     /// # Deadlocks
-    /// 
+    ///
     /// This function also locks a global lock that is
     /// used to uphold the guarantee that frames will not
     /// change between displaying and clearing (otherwise
     /// groups could clear more lines than they displayed).
-    /// 
+    ///
     /// This means that locking even two different `Shared`
     /// objects on the same thread will lead to a deadlock.
     #[allow(clippy::missing_panics_doc)]

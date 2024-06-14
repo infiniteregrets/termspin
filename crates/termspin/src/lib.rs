@@ -287,12 +287,21 @@ impl Frames for Line {
     }
 
     fn clear(&self, f: &mut std::fmt::Formatter<'_>) -> core::fmt::Result {
-        "\r".fmt(f)?;
-        ClearLine.fmt(f)
+        let lines = self.lines();
+
+        for i in 0..lines {
+            "\r".fmt(f)?;
+            ClearLine.fmt(f)?;
+            if i < lines - 1 {
+                CursorUp(1).fmt(f)?;
+            }
+        }
+
+        Ok(())
     }
 
     fn lines(&self) -> usize {
-        1
+        self.text.chars().filter(|&c| c == '\n').count() + 1
     }
 }
 
